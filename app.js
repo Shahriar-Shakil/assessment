@@ -1,4 +1,4 @@
-import cors from "cors";
+// import cors from "cors";
 import express from "express";
 import db from "./app/models/index.js";
 import router from "./app/routes/api.js";
@@ -6,7 +6,7 @@ import router from "./app/routes/api.js";
 const port = 5000;
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use("/api", router);
 
