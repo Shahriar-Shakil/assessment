@@ -43,7 +43,7 @@ const UsersController = {
         include: [
           {
             model: db.UserType,
-            as: "userType", // Use the alias defined in the association
+            as: "userType",
           },
         ],
       });
@@ -99,6 +99,27 @@ const UsersController = {
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Error deleting user" });
+    }
+  },
+  getUsersByRoleId: async (req, res) => {
+    const { roleId } = req.params;
+
+    try {
+      const userType = await db.UserType.findByPk(roleId, {
+        include: {
+          model: db.User,
+          as: "users",
+        },
+      });
+
+      if (!userType) {
+        return res.status(404).json({ message: "UserType not found" });
+      }
+
+      return res.status(200).json(userType.users);
+    } catch (error) {
+      console.error("Error fetching users by role ID:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 };

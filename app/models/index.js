@@ -42,7 +42,6 @@ for (const file of files) {
 }
 
 Object.keys(db).forEach((modelName) => {
-  console.log(db[modelName].associate);
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

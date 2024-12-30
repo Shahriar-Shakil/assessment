@@ -10,4 +10,6 @@ router.get("/users/:id", UsersController.GetUserById);
 router.put("/users/:id", UsersController.UpdateUserById);
 router.delete("/users/:id", UsersController.DeleteUserById);
 
+router.get("/users/role/:roleId", UsersController.getUsersByRoleId);
+
 export default router;
