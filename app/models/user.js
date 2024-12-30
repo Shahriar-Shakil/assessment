@@ -27,12 +27,26 @@ const User = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      user_type_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "UserTypes",
+          key: "id",
+        },
+      },
     },
     {
       tableName: "Users",
       timestamps: true,
     }
   );
+
+  UserModel.associate = (models) => {
+    UserModel.belongsTo(models.UserType, {
+      foreignKey: "user_type_id", // Foreign key in this model
+      as: "userType", // Alias for the association
+    });
+  };
 
   return UserModel;
 };

@@ -3,7 +3,7 @@ import db from "../models/index.js";
 const UsersController = {
   CreateUserProfile: async (req, res) => {
     try {
-      const { first_name, last_name, email, password } = req.body;
+      const { first_name, last_name, email, password, user_type_id } = req.body;
 
       if (!first_name || !last_name || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
@@ -14,6 +14,7 @@ const UsersController = {
         last_name,
         email,
         password,
+        user_type_id,
       });
 
       return res.status(201).json(newUser);
@@ -38,7 +39,14 @@ const UsersController = {
   GetUserById: async (req, res) => {
     const { id } = req.params;
     try {
-      const user = await db.User.findByPk(id);
+      const user = await db.User.findByPk(id, {
+        include: [
+          {
+            model: db.UserType,
+            as: "userType", // Use the alias defined in the association
+          },
+        ],
+      });
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });

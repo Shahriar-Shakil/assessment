@@ -24,22 +24,25 @@ if (dbConfig.use_env_variable) {
   );
 }
 
-fs.readdirSync(__dirname)
+const files = fs
+  .readdirSync(__dirname)
   .filter(
     (file) =>
       file.indexOf(".") !== 0 &&
       file !== basename &&
       file.slice(-3) === ".js" &&
       !file.includes(".test.js")
-  )
-  .forEach(async (file) => {
-    const model = await import(path.join(__dirname, file));
-    const modelDefinition = model.default(sequelize, Sequelize.DataTypes);
+  );
 
-    db[modelDefinition.name] = modelDefinition;
-  });
+for (const file of files) {
+  const model = await import(path.join(__dirname, file));
+  const modelDefinition = model.default(sequelize, Sequelize.DataTypes);
+
+  db[modelDefinition.name] = modelDefinition;
+}
 
 Object.keys(db).forEach((modelName) => {
+  console.log(db[modelName].associate);
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
