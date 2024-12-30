@@ -32,11 +32,11 @@ fs.readdirSync(__dirname)
       file.slice(-3) === ".js" &&
       !file.includes(".test.js")
   )
-  .forEach((file) => {
-    const model = import(path.join(__dirname, file)).then((module) =>
-      module.default(sequelize, Sequelize.DataTypes)
-    );
-    db[model.name] = model;
+  .forEach(async (file) => {
+    const model = await import(path.join(__dirname, file));
+    const modelDefinition = model.default(sequelize, Sequelize.DataTypes);
+
+    db[modelDefinition.name] = modelDefinition;
   });
 
 Object.keys(db).forEach((modelName) => {

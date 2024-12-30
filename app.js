@@ -1,14 +1,13 @@
 import cors from "cors";
 import express from "express";
-import db from "./models/index.js"; // ES module-compatible import
-import router from "./routes/api.js";
+import db from "./app/models/index.js";
+import router from "./app/routes/api.js";
 
 const port = 5000;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use("/api", router);
 
 db.sequelize
